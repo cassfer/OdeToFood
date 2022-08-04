@@ -9,7 +9,7 @@ namespace OdeToFood.Data
 {
     public interface IRestaurantData
     {
-        IEnumerable<Restaurant> GetAll();
+        IEnumerable<Restaurant> GetRestaurantsByName(string? name = null);
     }
 
     public class InMemoryRestaurantData : IRestaurantData
@@ -24,9 +24,10 @@ namespace OdeToFood.Data
                 new Restaurant {Id = 3, Name = "Cleiton Burger", Location = "Residencial Triunfo", Cuisine=CuisineType.Hamburger}
             };
         }
-        public IEnumerable<Restaurant> GetAll()
+        public IEnumerable<Restaurant> GetRestaurantsByName(string? name = null)
         {
             return from r in restaurants
+                   where string.IsNullOrEmpty(name) || r.Name.ToUpper().Contains(name.ToUpper())
                    orderby r.Name
                     select r;
         }
